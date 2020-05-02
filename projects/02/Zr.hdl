@@ -1,0 +1,28 @@
+
+// Zr(in[16]) = true   (in[16] == 0x00)
+// Zr(in[16]) = false  (in[16] != 0x00)
+
+CHIP Zr {
+	IN in[16];
+	OUT out;
+
+	PARTS:
+	Or16Way(in[0]=in[0],
+			in[1]=in[1],
+			in[2]=in[2],
+			in[3]=in[3],
+			in[4]=in[4],
+			in[5]=in[5],
+			in[6]=in[6],
+			in[7]=in[7],
+			in[8]=in[8],
+			in[9]=in[9],
+			in[10]=in[10],
+			in[11]=in[11],
+			in[12]=in[12],
+			in[13]=in[13],
+			in[14]=in[14],
+			in[15]=in[15],
+			out=w1);
+	Not(in=w1, out=out);
+}

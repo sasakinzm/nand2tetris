@@ -1,0 +1,32 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/03/a/PC.hdl
+
+/**
+ * A 16-bit counter with load and reset control bits.
+ * if      (reset[t] == 1) out[t+1] = 0
+ * else if (load[t] == 1)  out[t+1] = in[t]
+ * else if (inc[t] == 1)   out[t+1] = out[t] + 1  (integer addition)
+ * else                    out[t+1] = out[t]
+ */
+
+CHIP PC {
+    IN in[16],load,inc,reset;
+    OUT out[16];
+
+    PARTS:
+    Register(in[0]=in[0], in[1]=in[1], in[2]=in[2], in[3]=in[3], in[4]=in[4], in[5]=in[5], in[6]=in[6], in[7]=in[7], in[8]=in[8], in[9]=in[9], in[10]=in[10], in[11]=in[11], in[12]=in[12], in[13]=in[13], in[14]=in[14], in[15]=in[15], , load=true, out[0]=w001, out[1]=w011, out[2]=w021, out[3]=w031, out[4]=w041, out[5]=w051, out[6]=w061, out[7]=w071, out[8]=w081, out[9]=w091, out[10]=w101, out[11]=w111, out[12]=w121, out[13]=w131, out[14]=w141, out[15]=w151);
+    And16(a[0]=load, a[1]=load, a[2]=load, a[3]=load, a[4]=load, a[5]=load, a[6]=load, a[7]=load, a[8]=load, a[9]=load, a[10]=load, a[11]=load, a[12]=load, a[13]=load, a[14]=load, a[15]=load,  b[0]=w001, b[1]=w011, b[2]=w021, b[3]=w031, b[4]=w041, b[5]=w051, b[6]=w061, b[7]=w071, b[8]=w081, b[9]=w091, b[10]=w101, b[11]=w111, b[12]=w121, b[13]=w131, b[14]=w141, b[15]=w151, , out[0]=w002, out[1]=w012, out[2]=w022, out[3]=w032, out[4]=w042, out[5]=w052, out[6]=w062, out[7]=w072, out[8]=w082, out[9]=w092, out[10]=w102, out[11]=w112, out[12]=w122, out[13]=w132, out[14]=w142, out[15]=w152, );
+    Register(in[0]=in[0], in[1]=in[1], in[2]=in[2], in[3]=in[3], in[4]=in[4], in[5]=in[5], in[6]=in[6], in[7]=in[7], in[8]=in[8], in[9]=in[9], in[10]=in[10], in[11]=in[11], in[12]=in[12], in[13]=in[13], in[14]=in[14], in[15]=in[15], , load=false, out[0]=w003, out[1]=w013, out[2]=w023, out[3]=w033, out[4]=w043, out[5]=w053, out[6]=w063, out[7]=w073, out[8]=w083, out[9]=w093, out[10]=w103, out[11]=w113, out[12]=w123, out[13]=w133, out[14]=w143, out[15]=w153, );
+    Inc16(in[0]=w003, in[1]=w013, in[2]=w023, in[3]=w033, in[4]=w043, in[5]=w053, in[6]=w063, in[7]=w073, in[8]=w083, in[9]=w093, in[10]=w103, in[11]=w113, in[12]=w123, in[13]=w133, in[14]=w143, in[15]=w153,  out[0]=w004, out[1]=w014, out[2]=w024, out[3]=w034, out[4]=w044, out[5]=w054, out[6]=w064, out[7]=w074, out[8]=w084, out[9]=w094, out[10]=w104, out[11]=w114, out[12]=w124, out[13]=w134, out[14]=w144, out[15]=w154, );
+    And16(a[0]=inc, a[1]=inc, a[2]=inc, a[3]=inc, a[4]=inc, a[5]=inc, a[6]=inc, a[7]=inc, a[8]=inc, a[9]=inc, a[10]=inc, a[11]=inc, a[12]=inc, a[13]=inc, a[14]=inc, a[15]=inc,  b[0]=w004, b[1]=w014, b[2]=w024, b[3]=w034, b[4]=w044, b[5]=w054, b[6]=w064, b[7]=w074, b[8]=w084, b[9]=w094, b[10]=w104, b[11]=w114, b[12]=w124, b[13]=w134, b[14]=w144, b[15]=w154,  out[0]=w005, out[1]=w015, out[2]=w025, out[3]=w035, out[4]=w045, out[5]=w055, out[6]=w065, out[7]=w075, out[8]=w085, out[9]=w095, out[10]=w105, out[11]=w115, out[12]=w125, out[13]=w135, out[14]=w145, out[15]=w155,  );
+    Not(in=inc, out=notinc);
+    And16(a[0]=notinc, a[1]=notinc, a[2]=notinc, a[3]=notinc, a[4]=notinc, a[5]=notinc, a[6]=notinc, a[7]=notinc, a[8]=notinc, a[9]=notinc, a[10]=notinc, a[11]=notinc, a[12]=notinc, a[13]=notinc, a[14]=notinc, a[15]=notinc,  b[0]=w003, b[1]=w013, b[2]=w023, b[3]=w033, b[4]=w043, b[5]=w053, b[6]=w063, b[7]=w073, b[8]=w083, b[9]=w093, b[10]=w103, b[11]=w113, b[12]=w123, b[13]=w133, b[14]=w143, b[15]=w153,  out[0]=w006, out[1]=w016, out[2]=w026, out[3]=w036, out[4]=w046, out[5]=w056, out[6]=w066, out[7]=w076, out[8]=w086, out[9]=w096, out[10]=w106, out[11]=w116, out[12]=w126, out[13]=w136, out[14]=w146, out[15]=w156, );
+    Or16(a[0]=w005, a[1]=w015, a[2]=w025, a[3]=w035, a[4]=w045, a[5]=w055, a[6]=w065, a[7]=w075, a[8]=w085, a[9]=w095, a[10]=w105, a[11]=w115, a[12]=w125, a[13]=w135, a[14]=w145, a[15]=w155,  b[0]=w006, b[1]=w016, b[2]=w026, b[3]=w036, b[4]=w046, b[5]=w056, b[6]=w066, b[7]=w076, b[8]=w086, b[9]=w096, b[10]=w106, b[11]=w116, b[12]=w126, b[13]=w136, b[14]=w146, b[15]=w156,  out[0]=w007, out[1]=w017, out[2]=w027, out[3]=w037, out[4]=w047, out[5]=w057, out[6]=w067, out[7]=w077, out[8]=w087, out[9]=w097, out[10]=w107, out[11]=w117, out[12]=w127, out[13]=w137, out[14]=w147, out[15]=w157, );
+    Not(in=load, out=notload);
+    And16(a[0]=notload, a[1]=notload, a[2]=notload, a[3]=notload, a[4]=notload, a[5]=notload, a[6]=notload, a[7]=notload, a[8]=notload, a[9]=notload, a[10]=notload, a[11]=notload, a[12]=notload, a[13]=notload, a[14]=notload, a[15]=notload,  b[0]=w007, b[1]=w017, b[2]=w027, b[3]=w037, b[4]=w047, b[5]=w057, b[6]=w067, b[7]=w077, b[8]=w087, b[9]=w097, b[10]=w107, b[11]=w117, b[12]=w127, b[13]=w137, b[14]=w147, b[15]=w157,  out[0]=w008, out[1]=w018, out[2]=w028, out[3]=w038, out[4]=w048, out[5]=w058, out[6]=w068, out[7]=w078, out[8]=w088, out[9]=w098, out[10]=w108, out[11]=w118, out[12]=w128, out[13]=w138, out[14]=w148, out[15]=w158, );
+    Or16(a[0]=w002, a[1]=w012, a[2]=w022, a[3]=w032, a[4]=w042, a[5]=w052, a[6]=w062, a[7]=w072, a[8]=w082, a[9]=w092, a[10]=w102, a[11]=w112, a[12]=w122, a[13]=w132, a[14]=w142, a[15]=w152,  b[0]=w008, b[1]=w018, b[2]=w028, b[3]=w038, b[4]=w048, b[5]=w058, b[6]=w068, b[7]=w078, b[8]=w088, b[9]=w098, b[10]=w108, b[11]=w118, b[12]=w128, b[13]=w138, b[14]=w148, b[15]=w158,  out[0]=w009, out[1]=w019, out[2]=w029, out[3]=w039, out[4]=w049, out[5]=w059, out[6]=w069, out[7]=w079, out[8]=w089, out[9]=w099, out[10]=w109, out[11]=w119, out[12]=w129, out[13]=w139, out[14]=w149, out[15]=w159, );
+    Not(in=reset, out=notreset);
+    And16(a[0]=w009, a[1]=w019, a[2]=w029, a[3]=w039, a[4]=w049, a[5]=w059, a[6]=w069, a[7]=w079, a[8]=w089, a[9]=w099, a[10]=w109, a[11]=w119, a[12]=w129, a[13]=w139, a[14]=w149, a[15]=w159,  b[0]=notreset, b[1]=notreset, b[2]=notreset, b[3]=notreset, b[4]=notreset, b[5]=notreset, b[6]=notreset, b[7]=notreset, b[8]=notreset, b[9]=notreset, b[10]=notreset, b[11]=notreset, b[12]=notreset, b[13]=notreset, b[14]=notreset, b[15]=notreset,  out[0]=out[0], out[1]=out[1], out[2]=out[2], out[3]=out[3], out[4]=out[4], out[5]=out[5], out[6]=out[6], out[7]=out[7], out[8]=out[8], out[9]=out[9], out[10]=out[10], out[11]=out[11], out[12]=out[12], out[13]=out[13], out[14]=out[14], out[15]=out[15]);
+}

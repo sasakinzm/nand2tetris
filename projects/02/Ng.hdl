@@ -1,0 +1,11 @@
+
+// Ng(in[16]) = true  ( if in[16] < 0)
+// Ng(in[16]) = false ( if in[16] >= 0)
+
+CHIP Ng {
+	IN  in[16];
+	OUT out;
+
+	PARTS:
+	And(a=in[15], b=true, out=out);
+}

@@ -1,0 +1,27 @@
+
+/**
+ * 8-way 1-bit multiplexor:
+ * out = a if sel == 000
+ *       b if sel == 001
+ *       c if sel == 010
+ *       d if sel == 011
+ *       e if sel == 100
+ *       f if sel == 101
+ *       g if sel == 110
+ *       h if sel == 111
+ */
+
+CHIP Mux8Way {
+	IN a, b, c, d, e, f, g, h, sel[3];
+	OUT out;
+
+	PARTS:
+	Mux4(a=a, b=b, c=c, d=d, sel[0]=sel[0], sel[1]=sel[1], out=w1);
+	Mux4(a=e, b=f, c=g, d=h, sel[0]=sel[0], sel[1]=sel[1], out=w2);
+	Not(in=sel[2], out=notsel2);
+	And(a=w1, b=notsel2, out=w3);
+	And(a=w2, b=sel[2], out=w4);
+	Or(a=w3, b=w4, out=out);
+}
+
+

@@ -1,0 +1,11 @@
+
+// Id(in) = in
+
+CHIP Id {
+	IN in;
+	OUT out;
+
+	PARTS:
+	Not(in=in, out=notin);
+	Not(in=notin, out=out);
+}

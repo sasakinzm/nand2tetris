@@ -1,0 +1,115 @@
+// This file is part of the materials accompanying the book 
+// "The Elements of Computing Systems" by Nisan and Schocken, 
+// MIT Press. Book site: www.idc.ac.il/tecs
+// File name: projects/03/b/RAM512.hdl
+
+/**
+ * Memory of 512 registers, each 16 bit-wide. Out holds the value
+ * stored at the memory location specified by address. If load==1, then 
+ * the in value is loaded into the memory location specified by address 
+ * (the loaded value will be emitted to out from the next time step onward).
+ */
+
+CHIP RAM512 {
+    IN in[16], load, address[9];
+    OUT out[16];
+
+    PARTS:
+    DMux8Way(
+        in=load, sel[0]=address[6], sel[1]=address[7], sel[2]=address[8], 
+        a=a, b=b, c=c, d=d, e=e, f=f, g=g, h=h
+    );
+    RAM64(
+        in[0]=in[0], in[1]=in[1], in[2]=in[2],   in[3]=in[3],   in[4]=in[4],   in[5]=in[5],   in[6]=in[6],   in[7]=in[7], 
+        in[8]=in[8], in[9]=in[9], in[10]=in[10], in[11]=in[11], in[12]=in[12], in[13]=in[13], in[14]=in[14], in[15]=in[15],
+        address[0]=address[0], address[1]=address[1], address[2]=address[2], 
+        address[3]=address[3], address[4]=address[4], address[5]=address[5], 
+        load=a,
+        out[0]=a0, out[1]=a1, out[2]=a2,   out[3]=a3,   out[4]=a4,   out[5]=a5,   out[6]=a6,   out[7]=a7,
+        out[8]=a8, out[9]=a9, out[10]=a10, out[11]=a11, out[12]=a12, out[13]=a13, out[14]=a14, out[15]=a15
+    );
+    RAM64(
+        in[0]=in[0], in[1]=in[1], in[2]=in[2],   in[3]=in[3],   in[4]=in[4],   in[5]=in[5],   in[6]=in[6],   in[7]=in[7], 
+        in[8]=in[8], in[9]=in[9], in[10]=in[10], in[11]=in[11], in[12]=in[12], in[13]=in[13], in[14]=in[14], in[15]=in[15],
+        address[0]=address[0], address[1]=address[1], address[2]=address[2], 
+        address[3]=address[3], address[4]=address[4], address[5]=address[5], 
+        load=b,
+        out[0]=b0, out[1]=b1, out[2]=b2,   out[3]=b3,   out[4]=b4,   out[5]=b5,   out[6]=b6,   out[7]=b7,
+        out[8]=b8, out[9]=b9, out[10]=b10, out[11]=b11, out[12]=b12, out[13]=b13, out[14]=b14, out[15]=b15
+    );
+    RAM64(
+        in[0]=in[0], in[1]=in[1], in[2]=in[2],   in[3]=in[3],   in[4]=in[4],   in[5]=in[5],   in[6]=in[6],   in[7]=in[7], 
+        in[8]=in[8], in[9]=in[9], in[10]=in[10], in[11]=in[11], in[12]=in[12], in[13]=in[13], in[14]=in[14], in[15]=in[15],
+        address[0]=address[0], address[1]=address[1], address[2]=address[2], 
+        address[3]=address[3], address[4]=address[4], address[5]=address[5], 
+        load=c,
+        out[0]=c0, out[1]=c1, out[2]=c2,   out[3]=c3,   out[4]=c4,   out[5]=c5,   out[6]=c6,   out[7]=c7,
+        out[8]=c8, out[9]=c9, out[10]=c10, out[11]=c11, out[12]=c12, out[13]=c13, out[14]=c14, out[15]=c15
+    );
+    RAM64(
+        in[0]=in[0], in[1]=in[1], in[2]=in[2],   in[3]=in[3],   in[4]=in[4],   in[5]=in[5],   in[6]=in[6],   in[7]=in[7], 
+        in[8]=in[8], in[9]=in[9], in[10]=in[10], in[11]=in[11], in[12]=in[12], in[13]=in[13], in[14]=in[14], in[15]=in[15],
+        address[0]=address[0], address[1]=address[1], address[2]=address[2], 
+        address[3]=address[3], address[4]=address[4], address[5]=address[5], 
+        load=d,
+        out[0]=d0, out[1]=d1, out[2]=d2,   out[3]=d3,   out[4]=d4,   out[5]=d5,   out[6]=d6,   out[7]=d7,
+        out[8]=d8, out[9]=d9, out[10]=d10, out[11]=d11, out[12]=d12, out[13]=d13, out[14]=d14, out[15]=d15
+    );
+    RAM64(
+        in[0]=in[0], in[1]=in[1], in[2]=in[2],   in[3]=in[3],   in[4]=in[4],   in[5]=in[5],   in[6]=in[6],   in[7]=in[7], 
+        in[8]=in[8], in[9]=in[9], in[10]=in[10], in[11]=in[11], in[12]=in[12], in[13]=in[13], in[14]=in[14], in[15]=in[15],
+        address[0]=address[0], address[1]=address[1], address[2]=address[2], 
+        address[3]=address[3], address[4]=address[4], address[5]=address[5], 
+        load=e,
+        out[0]=e0, out[1]=e1, out[2]=e2,   out[3]=e3,   out[4]=e4,   out[5]=e5,   out[6]=e6,   out[7]=e7,
+        out[8]=e8, out[9]=e9, out[10]=e10, out[11]=e11, out[12]=e12, out[13]=e13, out[14]=e14, out[15]=e15
+    );
+    RAM64(
+        in[0]=in[0], in[1]=in[1], in[2]=in[2],   in[3]=in[3],   in[4]=in[4],   in[5]=in[5],   in[6]=in[6],   in[7]=in[7], 
+        in[8]=in[8], in[9]=in[9], in[10]=in[10], in[11]=in[11], in[12]=in[12], in[13]=in[13], in[14]=in[14], in[15]=in[15],
+        address[0]=address[0], address[1]=address[1], address[2]=address[2], 
+        address[3]=address[3], address[4]=address[4], address[5]=address[5], 
+        load=f,
+        out[0]=f0, out[1]=f1, out[2]=f2,   out[3]=f3,   out[4]=f4,   out[5]=f5,   out[6]=f6,   out[7]=f7,
+        out[8]=f8, out[9]=f9, out[10]=f10, out[11]=f11, out[12]=f12, out[13]=f13, out[14]=f14, out[15]=f15
+    );
+    RAM64(
+        in[0]=in[0], in[1]=in[1], in[2]=in[2],   in[3]=in[3],   in[4]=in[4],   in[5]=in[5],   in[6]=in[6],   in[7]=in[7], 
+        in[8]=in[8], in[9]=in[9], in[10]=in[10], in[11]=in[11], in[12]=in[12], in[13]=in[13], in[14]=in[14], in[15]=in[15],
+        address[0]=address[0], address[1]=address[1], address[2]=address[2], 
+        address[3]=address[3], address[4]=address[4], address[5]=address[5], 
+        load=g,
+        out[0]=g0, out[1]=g1, out[2]=g2,   out[3]=g3,   out[4]=g4,   out[5]=g5,   out[6]=g6,   out[7]=g7,
+        out[8]=g8, out[9]=g9, out[10]=g10, out[11]=g11, out[12]=g12, out[13]=g13, out[14]=g14, out[15]=g15
+    );
+    RAM64(
+        in[0]=in[0], in[1]=in[1], in[2]=in[2],   in[3]=in[3],   in[4]=in[4],   in[5]=in[5],   in[6]=in[6],   in[7]=in[7], 
+        in[8]=in[8], in[9]=in[9], in[10]=in[10], in[11]=in[11], in[12]=in[12], in[13]=in[13], in[14]=in[14], in[15]=in[15],
+        address[0]=address[0], address[1]=address[1], address[2]=address[2], 
+        address[3]=address[3], address[4]=address[4], address[5]=address[5], 
+        load=h,
+        out[0]=h0, out[1]=h1, out[2]=h2,   out[3]=h3,   out[4]=h4,   out[5]=h5,   out[6]=h6,   out[7]=h7,
+        out[8]=h8, out[9]=h9, out[10]=h10, out[11]=h11, out[12]=h12, out[13]=h13, out[14]=h14, out[15]=h15
+    );
+    Mux8Way16(
+        a[0]=a0, a[1]=a1, a[2]=a2,   a[3]=a3,   a[4]=a4,   a[5]=a5,   a[6]=a6,   a[7]=a7, 
+        a[8]=a8, a[9]=a9, a[10]=a10, a[11]=a11, a[12]=a12, a[13]=a13, a[14]=a14, a[15]=a15, 
+        b[0]=b0, b[1]=b1, b[2]=b2,   b[3]=b3,   b[4]=b4,   b[5]=b5,   b[6]=b6,   b[7]=b7, 
+        b[8]=b8, b[9]=b9, b[10]=b10, b[11]=b11, b[12]=b12, b[13]=b13, b[14]=b14, b[15]=b15, 
+        c[0]=c0, c[1]=c1, c[2]=c2,   c[3]=c3,   c[4]=c4,   c[5]=c5,   c[6]=c6,   c[7]=c7, 
+        c[8]=c8, c[9]=c9, c[10]=c10, c[11]=c11, c[12]=c12, c[13]=c13, c[14]=c14, c[15]=c15, 
+        d[0]=d0, d[1]=d1, d[2]=d2,   d[3]=d3,   d[4]=d4,   d[5]=d5,   d[6]=d6,   d[7]=d7, 
+        d[8]=d8, d[9]=d9, d[10]=d10, d[11]=d11, d[12]=d12, d[13]=d13, d[14]=d14, d[15]=d15, 
+        e[0]=e0, e[1]=e1, e[2]=e2,   e[3]=e3,   e[4]=e4,   e[5]=e5,   e[6]=e6,   e[7]=e7, 
+        e[8]=e8, e[9]=e9, e[10]=e10, e[11]=e11, e[12]=e12, e[13]=e13, e[14]=e14, e[15]=e15, 
+        f[0]=f0, f[1]=f1, f[2]=f2,   f[3]=f3,   f[4]=f4,   f[5]=f5,   f[6]=f6,   f[7]=f7, 
+        f[8]=f8, f[9]=f9, f[10]=f10, f[11]=f11, f[12]=f12, f[13]=f13, f[14]=f14, f[15]=f15, 
+        g[0]=g0, g[1]=g1, g[2]=g2,   g[3]=g3,   g[4]=g4,   g[5]=g5,   g[6]=g6,   g[7]=g7, 
+        g[8]=g8, g[9]=g9, g[10]=g10, g[11]=g11, g[12]=g12, g[13]=g13, g[14]=g14, g[15]=g15, 
+        h[0]=h0, h[1]=h1, h[2]=h2,   h[3]=h3,   h[4]=h4,   h[5]=h5,   h[6]=h6,   h[7]=h7, 
+        h[8]=h8, h[9]=h9, h[10]=h10, h[11]=h11, h[12]=h12, h[13]=h13, h[14]=h14, h[15]=h15, 
+        sel[0]=address[6], sel[1]=address[7], sel[2]=address[8], 
+        out[0]=out[0], out[1]=out[1], out[2]=out[2],   out[3]=out[3],   out[4]=out[4],   out[5]=out[5],   out[6]=out[6],   out[7]=out[7],
+        out[8]=out[8], out[9]=out[9], out[10]=out[10], out[11]=out[11], out[12]=out[12], out[13]=out[13], out[14]=out[14], out[15]=out[15]
+    );
+}

@@ -1,0 +1,115 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/02/ALU.hdl
+
+/**
+ * The ALU (Arithmetic Logic Unit).
+ * Computes one of the following functions:
+ * x+y, x-y, y-x, 0, 1, -1, x, y, -x, -y, !x, !y,
+ * x+1, y+1, x-1, y-1, x&y, x|y on two 16-bit inputs, 
+ * according to 6 input bits denoted zx,nx,zy,ny,f,no.
+ * In addition, the ALU computes two 1-bit outputs:
+ * if the ALU output == 0, zr is set to 1; otherwise zr is set to 0;
+ * if the ALU output < 0, ng is set to 1; otherwise ng is set to 0.
+ */
+
+// Implementation: the ALU logic manipulates the x and y inputs
+// and operates on the resulting values, as follows:
+// if (zx == 1) set x = 0        // 16-bit constant
+// if (nx == 1) set x = !x       // bitwise not
+// if (zy == 1) set y = 0        // 16-bit constant
+// if (ny == 1) set y = !y       // bitwise not
+// if (f == 1)  set out = x + y  // integer 2's complement addition
+// if (f == 0)  set out = x & y  // bitwise and
+// if (no == 1) set out = !out   // bitwise not
+// if (out == 0) set zr = 1
+// if (out < 0) set ng = 1
+
+CHIP ALU {
+    IN  
+        x[16], y[16],  // 16-bit inputs        
+        zx, // zero the x input?
+        nx, // negate the x input?
+        zy, // zero the y input?
+        ny, // negate the y input?
+        f,  // compute out = x + y (if 1) or x & y (if 0)
+        no; // negate the out output?
+
+    OUT 
+        out[16], // 16-bit output
+        zr, // 1 if (out == 0), 0 otherwise
+        ng; // 1 if (out < 0),  0 otherwise
+
+    PARTS:
+    // Z(in[16]=x[16],  z=zx, out[16]=w1[16])
+    // Z(in[16]=w1[16], n=nx, out[16]=w2[16])
+    // Z(in[16]=y[16],  z=zy, out[16]=w3[16])
+    // N(in[16]=w3[16], n=ny, out[16]=w4[16])
+    // Func(x[16]=w2[16], y[16]=w4[16], f=f, out[16]=w5[16]])
+    // N(in[16]=w5[16], n=no, out[16]=preout[16])
+    // Id(in[16]=w5[16], out[16]=out[16])
+    // Zr(in[16]=preout[16], out=zr)
+    // Ng(in[16]=preout[16], out=ng)
+
+    Z(
+        in[0]=x[0], in[1]=x[1], in[2]=x[2],   in[3]=x[3],   in[4]=x[4],   in[5]=x[5],   in[6]=x[6],   in[7]=x[7], 
+        in[8]=x[8], in[9]=x[9], in[10]=x[10], in[11]=x[11], in[12]=x[12], in[13]=x[13], in[14]=x[14], in[15]=x[15],
+        z=zx, 
+        out[0]=w001, out[1]=w011, out[2]=w021,  out[3]=w031,  out[4]=w041,  out[5]=w051,  out[6]=w061,  out[7]=w071,
+        out[8]=w081, out[9]=w091, out[10]=w101, out[11]=w111, out[12]=w121, out[13]=w131, out[14]=w141, out[15]=w151
+    );
+    N(
+        in[0]=w001, in[1]=w011, in[2]=w021,  in[3]=w031,  in[4]=w041,  in[5]=w051,  in[6]=w061,  in[7]=w071,
+        in[8]=w081, in[9]=w091, in[10]=w101, in[11]=w111, in[12]=w121, in[13]=w131, in[14]=w141, in[15]=w151,
+        n=nx,
+        out[0]=w002, out[1]=w012, out[2]=w022,  out[3]=w032,  out[4]=w042,  out[5]=w052,  out[6]=w062,  out[7]=w072,
+        out[8]=w082, out[9]=w092, out[10]=w102, out[11]=w112, out[12]=w122, out[13]=w132, out[14]=w142, out[15]=w152
+    );
+    Z(
+        in[0]=y[0], in[1]=y[1], in[2]=y[2],   in[3]=y[3],   in[4]=y[4],   in[5]=y[5],   in[6]=y[6],   in[7]=y[7], 
+        in[8]=y[8], in[9]=y[9], in[10]=y[10], in[11]=y[11], in[12]=y[12], in[13]=y[13], in[14]=y[14], in[15]=y[15],
+        z=zy, 
+        out[0]=w003, out[1]=w013, out[2]=w023,  out[3]=w033,  out[4]=w043,  out[5]=w053,  out[6]=w063,  out[7]=w073,
+        out[8]=w083, out[9]=w093, out[10]=w103, out[11]=w113, out[12]=w123, out[13]=w133, out[14]=w143, out[15]=w153
+    );
+    N(
+        in[0]=w003, in[1]=w013, in[2]=w023,  in[3]=w033,  in[4]=w043,  in[5]=w053,  in[6]=w063,  in[7]=w073,
+        in[8]=w083, in[9]=w093, in[10]=w103, in[11]=w113, in[12]=w123, in[13]=w133, in[14]=w143, in[15]=w153,
+        n=ny,
+        out[0]=w004, out[1]=w014, out[2]=w024,  out[3]=w034,  out[4]=w044,  out[5]=w054,  out[6]=w064,  out[7]=w074,
+        out[8]=w084, out[9]=w094, out[10]=w104, out[11]=w114, out[12]=w124, out[13]=w134, out[14]=w144, out[15]=w154
+    );
+    Func(
+        x[0]=w002, x[1]=w012, x[2]=w022,  x[3]=w032,  x[4]=w042,  x[5]=w052,  x[6]=w062,  x[7]=w072, 
+        x[8]=w082, x[9]=w092, x[10]=w102, x[11]=w112, x[12]=w122, x[13]=w132, x[14]=w142, x[15]=w152, 
+        y[0]=w004, y[1]=w014, y[2]=w024,  y[3]=w034,  y[4]=w044,  y[5]=w054,  y[6]=w064,  y[7]=w074, 
+        y[8]=w084, y[9]=w094, y[10]=w104, y[11]=w114, y[12]=w124, y[13]=w134, y[14]=w144, y[15]=w154, 
+	    f=f,
+        out[0]=w005, out[1]=w015, out[2]=w025,  out[3]=w035,  out[4]=w045,  out[5]=w055,  out[6]=w065,  out[7]=w075, 
+        out[8]=w085, out[9]=w095, out[10]=w105, out[11]=w115, out[12]=w125, out[13]=w135, out[14]=w145, out[15]=w155
+    );
+    N(
+        in[0]=w005, in[1]=w015, in[2]=w025,  in[3]=w035,  in[4]=w045,  in[5]=w055,  in[6]=w065,  in[7]=w075, 
+        in[8]=w085, in[9]=w095, in[10]=w105, in[11]=w115, in[12]=w125, in[13]=w135, in[14]=w145, in[15]=w155,
+        n=no,
+        out[0]=preout0, out[1]=preout1, out[2]=preout2,   out[3]=preout3,   out[4]=preout4,   out[5]=preout5,   out[6]=preout6,   out[7]=preout7,
+        out[8]=preout8, out[9]=preout9, out[10]=preout10, out[11]=preout11, out[12]=preout12, out[13]=preout13, out[14]=preout14, out[15]=preout15
+    );
+    Id16(
+        in[0]=preout0, in[1]=preout1, in[2]=preout2,   in[3]=preout3,   in[4]=preout4,   in[5]=preout5,   in[6]=preout6,   in[7]=preout7,
+        in[8]=preout8, in[9]=preout9, in[10]=preout10, in[11]=preout11, in[12]=preout12, in[13]=preout13, in[14]=preout14, in[15]=preout15,
+        out[0]=out[0], out[1]=out[1], out[2]=out[2],   out[3]=out[3],   out[4]=out[4],   out[5]=out[5],   out[6]=out[6],   out[7]=out[7], 
+        out[8]=out[8], out[9]=out[9], out[10]=out[10], out[11]=out[11], out[12]=out[12], out[13]=out[13], out[14]=out[14], out[15]=out[15]
+    );
+    Zr(
+        in[0]=preout0, in[1]=preout1, in[2]=preout2,   in[3]=preout3,   in[4]=preout4,   in[5]=preout5,   in[6]=preout6,   in[7]=preout7, 
+        in[8]=preout8, in[9]=preout9, in[10]=preout10, in[11]=preout11, in[12]=preout12, in[13]=preout13, in[14]=preout14, in[15]=preout15,
+        out=zr
+    );
+    Ng(
+        in[0]=preout0, in[1]=preout1, in[2]=preout2,   in[3]=preout3,   in[4]=preout4,   in[5]=preout5,   in[6]=preout6,   in[7]=preout7, 
+        in[8]=preout8, in[9]=preout9, in[10]=preout10, in[11]=preout11, in[12]=preout12, in[13]=preout13, in[14]=preout14, in[15]=preout15,
+        out=ng
+    );
+}
